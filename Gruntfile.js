@@ -359,7 +359,7 @@ module.exports = function (grunt) {
         chromeManifest: {
             dist: {
                 options: {
-                    buildnumber: true,
+                    buildnumber: false,
                     background: {
                         target: 'scripts/background.js',
                         exclude: [
@@ -391,7 +391,7 @@ module.exports = function (grunt) {
     grunt.registerTask('debug', function (platform) {
         var watch = grunt.config('watch');
         platform = platform || 'chrome';
-        
+
         // Configure compass task for debug[server:chrome] task
         watch.compass = {
             files: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
