@@ -1,0 +1,11 @@
+node_modules
+temp
+.tmp
+dist
+.sass-cache
+app/scripts/*.js
+app/styles/*.css
+app/bower_components
+test/bower_components
+package
+.DS_Store
