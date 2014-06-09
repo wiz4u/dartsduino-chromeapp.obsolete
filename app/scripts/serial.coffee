@@ -7,9 +7,11 @@
         constructor: ->
             @serial = chrome.serial
 
-        connect: (path) ->
+        connect: (path, callback) ->
             # console.log 'connect'
-            @serial.connect path, @onConnected
+            @serial.connect path, (info) =>
+                @onConnected(info)
+                callback?(info)
 
         onConnected: (info) =>
             if not info?
@@ -24,6 +26,14 @@
         onReceive: (info) ->
             data = new Uint8Array(info.data)[0]
             console.log data
+
+        disconnect: ->
+            return unless @connectionId?
+
+            @serial.disconnect @connectionId, => {}
+            @connectionId = null
+
+            console.log 'Disconnected.'
 
     window.Serial = Serial
 
