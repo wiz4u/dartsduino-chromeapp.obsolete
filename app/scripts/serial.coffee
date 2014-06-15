@@ -2,9 +2,13 @@
 
 class Serial
     connectionId: null
+    listener: null
 
     constructor: ->
         @serial = chrome.serial
+
+    setListener: (listener) ->
+        @listener = listener
 
     connect: (path, callback) ->
         # console.log 'connect'
@@ -22,9 +26,9 @@ class Serial
         @connectionId = info.connectionId
         @serial.onReceive.addListener @onReceive
 
-    onReceive: (info) ->
+    onReceive: (info) =>
         data = new Uint8Array(info.data)[0]
-        console.log data
+        @listener?(data)
 
     disconnect: ->
         return unless @connectionId?
