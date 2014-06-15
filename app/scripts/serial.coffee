@@ -1,40 +1,41 @@
-( (window) ->
-    'use strict'
+'use strict'
 
-    class Serial
-        connectionId: null
+class Serial
+    connectionId: null
+    listener: null
 
-        constructor: ->
-            @serial = chrome.serial
+    constructor: ->
+        @serial = chrome.serial
 
-        connect: (path, callback) ->
-            # console.log 'connect'
-            @serial.connect path, (info) =>
-                @onConnected(info)
-                callback?(info)
+    setListener: (listener) ->
+        @listener = listener
 
-        onConnected: (info) =>
-            if not info?
-                console.log 'Connection failed.'
-                return
+    connect: (path, callback) ->
+        # console.log 'connect'
+        @serial.connect path, (info) =>
+            @onConnected(info)
+            callback?(info)
 
-            console.log 'Connected.'
+    onConnected: (info) =>
+        if not info?
+            console.log 'Connection failed.'
+            return
 
-            @connectionId = info.connectionId
-            @serial.onReceive.addListener @onReceive
+        console.log 'Connected.'
 
-        onReceive: (info) ->
-            data = new Uint8Array(info.data)[0]
-            console.log data
+        @connectionId = info.connectionId
+        @serial.onReceive.addListener @onReceive
 
-        disconnect: ->
-            return unless @connectionId?
+    onReceive: (info) =>
+        data = new Uint8Array(info.data)[0]
+        @listener?(data)
 
-            @serial.disconnect @connectionId, => {}
-            @connectionId = null
+    disconnect: ->
+        return unless @connectionId?
 
-            console.log 'Disconnected.'
+        @serial.disconnect @connectionId, => {}
+        @connectionId = null
 
-    window.Serial = Serial
+        console.log 'Disconnected.'
 
-)(window)
+window.Serial = Serial

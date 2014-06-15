@@ -1,12 +1,10 @@
-( (window) ->
-    'use strict'
+'use strict'
 
-    serial = new window.Serial()
-    serial.connect '/dev/cu.usbserial-A9EDPBB7'
+dartsUi = new window.DartsUi document.getElementById('darts-ui')
+dartsUi.setListener (score, ratio) ->
+    console.log score + ', ' + ratio + ' = ' + score * ratio
 
-    document.addEventListener 'DOMContentLoaded', () ->
-        h1 = document.getElementsByTagName('h1')
-        if h1.length > 0
-            h1[0].innerText = h1[0].innerText + ' \'Allo'
-    , false
-)(window)
+serial = new window.Serial()
+serial.connect '/dev/cu.usbserial-A9EDPBB7'
+serial.setListener (info) ->
+    dartsUi.hit info

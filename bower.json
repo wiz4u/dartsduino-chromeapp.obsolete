@@ -1,6 +1,8 @@
 {
   "name": "dartsduino-chromeapp",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "darts-ui": "../darts-ui"
+  },
   "devDependencies": {}
 }
