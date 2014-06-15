@@ -7,4 +7,6 @@ dartsUi.setListener (score, ratio) ->
 serial = new window.Serial()
 serial.connect '/dev/cu.usbserial-A9EDPBB7'
 serial.setListener (info) ->
-    dartsUi.hit info
+    element = dartsUi.hit info
+    [score, ratio] = element.id.split '-'
+    console.log score + ' * ' + ratio + ' = ' + score * ratio
